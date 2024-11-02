@@ -1,0 +1,28 @@
+<div class="card-fondo">
+    <table style="width: 100%;">
+        <thead>
+            <th style="padding-right: 4vh;">Nombre</th>
+            <th>Mail</th>
+            <th>Perfil</th>
+            <th>Acciones</th>
+        </thead>
+        <tbody>
+        @for (usuario of usuarios; track $index) {
+            <tr (click)="seleccionarUsuario($index)" [id]="$index">
+                <td>{{usuario.nombre}} {{usuario.apellido}}</td>
+                <td>{{usuario.mail}}</td>
+                <td>{{usuario.tipoUsuario}}</td>
+                @if (usuario.tipoUsuario == 'especialista') 
+                {
+                    <td>
+                        <label class="container">
+                        <input [checked]=usuario.aprobado type="checkbox" (change)="onEspecializacionChange($event, $index)">
+                        <div class="checkmark"></div>
+                      </label>
+                    </td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
