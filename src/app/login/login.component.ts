@@ -47,6 +47,12 @@ export class LoginComponent {
   }
 
   login(email:string = "", password:string = ""){
+    
+    if (email != "" && password != "") {
+      this.formGroup.controls['mail'].setValue(email);
+      this.formGroup.controls['clave'].setValue(password);
+    }
+    
     if (this.formGroup.invalid) {
       Swal.fire({
         icon: "error",
@@ -57,10 +63,6 @@ export class LoginComponent {
     }
     this.flagLoader = true;
 
-    if (email != "" && password != "") {
-      this.formGroup.controls['mail'].setValue(email);
-      this.formGroup.controls['clave'].setValue(password);
-    }
 
     this.auth.login(this.formGroup.controls['mail'].value, this.formGroup.controls['clave'].value).then((res)=>{
       if (res) {
