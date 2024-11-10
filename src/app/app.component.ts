@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { Especialista } from '../classes/especialista';
 import { Subscription } from 'rxjs';
 import { LoaderComponent } from './loader/loader.component';
+import localeEs from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -28,9 +30,12 @@ export class AppComponent {
   admins! : Subscription;
   flagLoader : boolean = false;
   mensaje = "Cargando...";
+  paginaTurnos : string = "";
 
 
   constructor(){
+    registerLocaleData(localeEs, 'es');
+
     this.auth.onAuthStateChanged((auth) => {
       console.log(this.auth.logeado);
       if (this.auth.logeado && this.auth.usuarioActual == null) {   
@@ -39,9 +44,12 @@ export class AppComponent {
           let usuarios : any[] = users;
           usuarios.forEach(user => {
             if (user.mail == auth?.email){
+              this.paginaTurnos = 'mis-turnos'
+              this.auth.id = user.id; 
               this.auth.nombre = user.nombre; 
               this.auth.mail = user.mail; 
               this.auth.perfil = "Especialista";
+              this.auth.especialista = user;
               if (this.auth.auth.currentUser?.emailVerified) {
                 this.auth.mailVerificado = "✔";
                 this.auth.especialistaAprobado = user.aprobado ? "✔" : "❌";
@@ -58,10 +66,13 @@ export class AppComponent {
           let usuarios : any[] = users;
           usuarios.forEach(user => {
             if (user.mail == auth?.email){
+              this.paginaTurnos = 'mis-turnos'
               console.log(user)
+              this.auth.id = user.id; 
               this.auth.nombre = user.nombre; 
               this.auth.mail = user.mail; 
               this.auth.perfil = "Paciente";
+              this.auth.paciente = user;
               if (this.auth.auth.currentUser?.emailVerified) {
                 this.auth.mailVerificado = "✔";
               } else {
@@ -76,7 +87,9 @@ export class AppComponent {
           let usuarios : any[] = users;
           usuarios.forEach(user => {
             if (user.mail == auth?.email){
+              this.paginaTurnos = 'turnos'
               console.log(user)
+              this.auth.id = user.id; 
               this.auth.nombre = user.nombre; 
               this.auth.mail = user.mail; 
               this.auth.perfil = "Administrador";

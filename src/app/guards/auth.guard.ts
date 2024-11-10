@@ -6,9 +6,8 @@ export const authGuard: CanActivateFn = (route, state) => {
   let auth = inject(AuthService);
   let flag : boolean = false;
 
-  flag = auth.logeado;
-  console.log(auth.auth.currentUser)
-  if (!flag) {
+  flag = false;
+  if (!auth.logeado) {
     if (state.url == '/login' || state.url == '/register') {
       return true;
     }
@@ -18,6 +17,18 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
   if (state.url == '/seccion-usuarios' && auth.perfil == 'Administrador') {
     return true;
+  }
+  if (state.url == '/turnos' && auth.perfil == 'Administrador') {
+    return true;
+  }
+  if (state.url == '/solicitar-turno' && (auth.perfil == 'Administrador' || auth.perfil == 'Paciente')) {
+    return true
+  }
+  if (state.url == '/mi-perfil' && auth.perfil == 'Especialista') {
+    return true
+  }
+  if (state.url == '/mis-turnos' && (auth.perfil == 'Especialista' || auth.perfil == 'Paciente')) {
+    return true
   }
   return flag;
 };

@@ -18,13 +18,21 @@ export class AuthService {
   authSubscription?: Unsubscribe;
   usuario : Paciente | Especialista |any = null;
   
+  id : string = "";
   nombre : string = "";
   perfil : string = "";
   mailVerificado : string = "";
   especialistaAprobado : string = "";
   mail : string | null = "";
-  logeado : boolean = false;
+  dni : string = "";
+
+
+  especialista : any;
+  paciente : any;
+
+  logeado : boolean = true;
   usuarioActual : any = null;
+
   constructor() {
     this.authSubscription = this.onAuthStateChanged((auth) => {
       if(auth?.email){
@@ -37,6 +45,7 @@ export class AuthService {
         this.mail = ""; 
         this.perfil = "";
         this.mailVerificado = "";
+        this.id = "";
       }
     });
    }
@@ -134,6 +143,8 @@ export class AuthService {
   signOut(){
     this.usuarioActual = null
     this.logeado = false;
+    this.especialista = null;
+    this.paciente = null;
     this.perfil = "";
     this.router.navigateByUrl("")
     return this.auth.signOut()

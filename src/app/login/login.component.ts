@@ -26,12 +26,12 @@ export class LoginComponent {
   obraSocial : string = "";
   especialistaFlag : boolean = false;
   flagLoader : boolean = false;
+  mensaje : string = "Ingresando";
   imagen1URL : string = "";
   imagen2URL : string = "";
   imagen1 : any;
   imagen2 : any;
   especializaciones :any[] = [];
-  mensaje : string = "Ingresando";
 
   constructor(){
     this.formGroup = this.fb.group({

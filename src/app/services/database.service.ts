@@ -4,7 +4,7 @@ import { Paciente } from '../../classes/paciente';
 import { Especialista } from '../../classes/especialista';
 import { Observable } from 'rxjs';
 import { getDownloadURL, ref, Storage, uploadBytes } from '@angular/fire/storage';
-import { doc, getDoc, getFirestore, updateDoc } from '@angular/fire/firestore';
+import { collection, doc, getDoc, getDocs, getFirestore, increment, query, updateDoc, where } from '@angular/fire/firestore';
 import { Administrador } from '../../classes/administrador';
 
 @Injectable({
@@ -63,13 +63,106 @@ export class DatabaseService {
     }
   }
 
+  agregarColeccion(path:string, data:any){
+    const col = this.firestore.collection(path); //referencia a la coleccion de BD
+    console.log(data);
+    col.add({...data});
+  }
+
   traerEspecializaciones(): Observable<string[]> {
     const colUsuarios = this.firestore.collection("especializaciones");
     return colUsuarios.valueChanges() as Observable<string[]>;
   }
 
+  actualizarEstadoTurno(id:string, estado:string){
+    return this.firestore.collection('turnos').doc(id).update({estado: estado});
+  }
+
+  actualizarMensajeTurno(id:string, mensaje:string){
+    return this.firestore.collection('turnos').doc(id).update({mensaje: mensaje});
+  }
+
+  actualizarCalificacionTurno(id:string, mensaje:string){
+    return this.firestore.collection('turnos').doc(id).update({calificacion: mensaje});
+  }
 
   actualizarEspecialista(id:string, aprobacion:boolean){
     return this.firestore.collection('especialistas').doc(id).update({aprobado: aprobacion});
   }
+
+  async actualizarTurnos(id:string, path:string, horario:string){
+    const docRef = doc(getFirestore(), path, id);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      const data : any = docSnap.data();
+      if (data.turnos) {
+        if (!data.turnos.includes(horario)) {
+          const nuevosHorarios = [...data.turnos, horario];
+          
+          return updateDoc(docRef, {
+            turnos: nuevosHorarios
+          });
+        }
+        return;
+      }
+      const nuevosHorarios = [horario];
+      return updateDoc(docRef, {
+        turnos: nuevosHorarios
+      });
+    }
+  }
+
+  async actualizarHorarios(id:string, path:string, horario:any[]){
+    const docRef = doc(getFirestore(), path, id);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      let nuevosHorarios : any[] = []
+      for await (const element of horario) {
+        nuevosHorarios.push(element);
+      }
+      console.log(nuevosHorarios);
+      return updateDoc(docRef, {
+        horariosDisponibles: nuevosHorarios
+      });
+    }
+  }
+
+  obtenerDocPorId(path:string, id:string){
+    return this.firestore.collection(path).doc(id).get();
+  }
+
+  // async actualizarSinID(path: string, campo: string, valor: string, horario: string){
+  //   const db = getFirestore();
+  //   const coleccionRef = collection(db, path);
+
+  //   // Busca el documento por el campo específico
+  //   const q = query(coleccionRef, where(campo, "==", valor));
+  //   const querySnapshot = await getDocs(q);
+
+  //   if (!querySnapshot.empty) {
+  //     querySnapshot.forEach(async (docSnap) => {
+  //       const data: any = docSnap.data();
+        
+  //       if (data.turnos) {
+  //         if (!data.turnos.includes(horario)) {
+  //           const nuevosHorarios = [...data.turnos, horario];
+
+  //           // Actualizar el documento encontrado
+  //           await updateDoc(docSnap.ref, {
+  //             turnos: nuevosHorarios,
+  //           });
+  //         }
+  //       } else {
+  //         const nuevosHorarios = [horario];
+  //         await updateDoc(docSnap.ref, {
+  //           turnos: nuevosHorarios,
+  //         });
+  //       }
+  //     });
+  //   } else {
+  //     console.log("No se encontró ningún documento con ese valor.");
+  //   }
+  // }
 }

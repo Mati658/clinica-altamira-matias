@@ -8,11 +8,12 @@ import { DatabaseService } from '../services/database.service';
 import { AuthService } from '../services/auth.service';
 import { LoaderComponent } from '../loader/loader.component';
 import { Administrador } from '../../classes/administrador';
+import { RecaptchaComponent, RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, FormsModule, LoaderComponent],
+  imports: [ReactiveFormsModule, RouterLink, FormsModule, LoaderComponent, RecaptchaFormsModule, RecaptchaModule,RecaptchaFormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -36,6 +37,7 @@ export class RegisterComponent {
   especializaciones :any[] = [];
   mensaje : string = "Verifique su mail";
   especializacionesSeleccionadas : string[] = [];
+  captcha : string = "";
 
   constructor(){
     this.formGroup = this.fb.group({
@@ -65,7 +67,6 @@ export class RegisterComponent {
     this.formGroup.controls["clave"].setValue("");
     this.formGroup.controls["obraSocial"].setValue("");
     this.formGroup.controls["especialista"].setValue("");
-
   }
 
   registrar(){
@@ -223,5 +224,11 @@ export class RegisterComponent {
     }
 
     console.log(this.especializacionesSeleccionadas);
+  }
+
+  obtenerCaptcha(event : any){
+    setTimeout(() => {
+      this.captcha = event;
+    }, 1000);
   }
 }

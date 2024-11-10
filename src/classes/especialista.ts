@@ -7,6 +7,7 @@ export class Especialista {
     imagenes : any[];
     especializaciones : string[];
     aprobado : boolean;
+    turnos : string[];
     constructor(nombre:string, apellido:string, edad:number, dni:number, especializacion:string[], mail:string, imagenes:any[] = [], aprobado:boolean = false){
         this.nombre = nombre;
         this.apellido = apellido ;
@@ -16,5 +17,6 @@ export class Especialista {
         this.mail = mail;
         this.imagenes = imagenes;
         this.aprobado = aprobado;
+        this.turnos = [];
     }
 }
