@@ -41,8 +41,8 @@
                                 </button>
                             }
 
-                            @if (turno.estado == 'Finalizado') {
-                                <button >
+                            @if (turno.estado == 'Finalizado' && !turno.exp) {
+                                <button (click)="completarEncuesta()">
                                     <span class="shadow"></span>
                                     <span class="edge"></span>
                                     <span class="front text"> Encuesta

@@ -105,7 +105,8 @@ export class RegisterComponent {
           this.especializacionesSeleccionadas.push(this.formGroup.controls["especialista"].value)
           if (!this.especializaciones.includes(this.formGroup.controls["especialista"].value)) {
             console.log('especializacion: '+ this.formGroup.controls["especialista"].value)
-            this.database.agregarEspecializacion(this.formGroup.controls["especialista"].value);
+            let especializacion = JSON.stringify({esp:this.formGroup.controls['especialista'].value, img:'https://firebasestorage.googleapis.com/v0/b/clinica-online-matias-altamira.appspot.com/o/especializaciones%2Fmedical-circle-svgrepo-com.svg?alt=media&token=00b46964-be50-4c74-a30a-a7e769603eb0'}) 
+            this.database.agregarEspecializacion(especializacion);
           }
         }
         if (this.especializacionesSeleccionadas.length == 0) {

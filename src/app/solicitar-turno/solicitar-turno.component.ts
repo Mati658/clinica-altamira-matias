@@ -24,22 +24,28 @@ export class SolicitarTurnoComponent {
   especializaciones : any[] = [];
   especialistas : any[] = [];
   pacientes : any[] = [];
-  fechas: string[] = [];
+  fechas: any[] = [];
   fechaAnterior : any;
   fechaSeleccionada : string = "";
-  fechaCompletaSeleccionada : string = "";
+  horarioSeleccionado : string = "";
+  fechaCompletaSeleccionada : any;
   especialistaSeleccionado : any;
   pacienteSeleccionado : any;
   nombreEspecialista = "";  
   flagLoader : boolean = false;
   mensaje : string = "Guardando turno...";
-
+  especialidad : string = "";
+  especialista : string = "";
   formGroup : FormGroup;
 
+  btnEspecialistaAnterior : any;
+  btnEspecialidadAnterior : any;
+  btnHorarioAnterior : any;
   constructor(){
     this.generarFechas();
     this.database.traerEspecializaciones().subscribe(res=>{
       this.especializaciones = res;
+      console.log(JSON.parse(this.especializaciones[0].especialidadesMedicas))
     }).closed
     this.database.traerUsuarios('especialistas').subscribe((usuario:any)=>{
       this.especialistas = usuario;
@@ -48,16 +54,15 @@ export class SolicitarTurnoComponent {
       this.pacientes = usuario;
     }).closed
 
-  this.formGroup = this.fb.group({
-    especialidad: ["Especialidad",[Validators.required]],
-    especialista: ["Especialista",[Validators.required]],
-    horario: ["Horarios",[Validators.required]],
-    paciente: ["Paciente",[Validators.required]],
-  });
-  if (this.auth.paciente) {
-    this.pacienteSeleccionado = this.auth.paciente;
-    console.log(this.pacienteSeleccionado)
-  }
+    this.formGroup = this.fb.group({
+      paciente: ["Paciente",[Validators.required]],
+    });
+    if (this.auth.paciente) {
+      this.pacienteSeleccionado = this.auth.paciente;
+      console.log(this.pacienteSeleccionado)
+    }
+
+    
   }
 
   generarFechas(): void {
@@ -68,9 +73,19 @@ export class SolicitarTurnoComponent {
       const fecha = new Date();
       fecha.setDate(hoy.getDate() + i);
 
-      const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-      this.fechas.push(fechaFormateada);
+      const diaFormateado = fecha.toLocaleDateString('es-ES', opciones);
+      
+
+      // Formato 'dd/mm'
+      const dia = fecha.getDate().toString().padStart(2, '0'); // Asegura dos dígitos
+      const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Mes en dos dígitos
+      const fechaFormateada = `${dia}/${mes}`;
+
+
+      this.fechas.push({dia: diaFormateado, fecha: fechaFormateada});
     }
+    console.log(this.fechas)
+
   }
 
   getDia(dia:string){
@@ -113,7 +128,7 @@ export class SolicitarTurnoComponent {
 
     let horarios :string[] = []
     
-    let indice = this.getDia(this.fechaSeleccionada);
+    let indice = this.getDia(this.fechaSeleccionada.split(",")[0]);
     let inicio = this.especialistaSeleccionado.horariosDisponibles[indice].inicio;
     let fin = this.especialistaSeleccionado.horariosDisponibles[indice].fin;
 
@@ -133,12 +148,13 @@ export class SolicitarTurnoComponent {
   }
 
   seleccionarFecha(index : number){
-    console.log(this.horariosDisponibles);
     this.marcarFecha(index);
-    this.fechaSeleccionada = this.fechas[index].split(",")[0];
+    this.fechaSeleccionada = this.fechas[index].dia;
+    console.log(this.fechaSeleccionada);
     this.fechaCompletaSeleccionada = this.fechas[index];
     if (this.especialistaSeleccionado && this.fechaSeleccionada) {
       this.horariosDisponibles = this.generarHorarios();
+      this.obtenerHorarios()
     }
   }
 
@@ -157,9 +173,12 @@ export class SolicitarTurnoComponent {
 
   async obtenerHorarios(){
     console.log(this.especialistaSeleccionado) 
+    console.log(this.fechaCompletaSeleccionada) 
     for await (let turno of this.especialistaSeleccionado.turnos) {
       turno = JSON.parse(turno);
-      if (turno.dia == this.fechaCompletaSeleccionada) {
+      console.log(turno.dia) 
+
+      if (turno.dia == this.fechaCompletaSeleccionada.dia) {
         let indice = this.horariosDisponibles.indexOf(turno.horario);
         if (indice != -1) {
           this.horariosDisponibles.splice(indice, 1);
@@ -171,7 +190,7 @@ export class SolicitarTurnoComponent {
       console.log(this.pacienteSeleccionado)
       for await (let turno of this.pacienteSeleccionado.turnos) {
         turno = JSON.parse(turno);
-        if (turno.dia == this.fechaCompletaSeleccionada) {
+        if (turno.dia == this.fechaCompletaSeleccionada.dia) {
           let indice = this.horariosDisponibles.indexOf(turno.horario);
           if (indice != -1) {
             this.horariosDisponibles.splice(indice, 1);
@@ -179,19 +198,73 @@ export class SolicitarTurnoComponent {
         }
       }
     }
+
+    console.log(this.horariosDisponibles)
+
   }
 
-  recibirEspecialista(event : Event){
-    const selectElement = event.target as HTMLSelectElement;
-    if (selectElement.value != "0") {
-      this.especialistaSeleccionado = JSON.parse(selectElement.value);
+  recibirEspecialista(data : any, index : string){
+    if (this.btnEspecialistaAnterior) {
+      this.btnEspecialistaAnterior.classList.remove("animar");
+    }
+
+    const buttonElement = document.getElementById(String(index));
+    if (buttonElement) { 
+      buttonElement.classList.add("animar");
+      this.btnEspecialistaAnterior = buttonElement;
+    }
+
+    console.log(data)
+    if (data) {
+      this.especialistaSeleccionado = data;
+    }
+   
+    if (this.fechaSeleccionada) {
       this.horariosDisponibles = this.generarHorarios();
-      console.log(this.especialistaSeleccionado)
       this.obtenerHorarios()
     }
 
-
     this.nombreEspecialista = `${this.especialistaSeleccionado.nombre} ${this.especialistaSeleccionado.apellido}`
+  }
+
+  recibirEspecialidad(data : any, index : string){
+    if (this.btnEspecialidadAnterior) {
+      this.btnEspecialidadAnterior.classList.remove("animar");
+      this.btnEspecialistaAnterior.classList.remove("animar");
+      this.especialistaSeleccionado = "";
+    }
+    
+    const buttonElement = document.getElementById(String(index));
+    if (buttonElement) { 
+      buttonElement.classList.add("animar");
+      this.btnEspecialidadAnterior = buttonElement;
+    }
+    data = JSON.parse(data);
+    if (data) {
+      this.especialidad = data.esp;
+      console.log(this.especialidad)
+    }
+
+    if (this.fechaSeleccionada) {
+      this.horariosDisponibles = this.generarHorarios();
+      this.obtenerHorarios()
+    }
+  }
+
+  recibirHorario(data:any, index : string){
+    if (this.btnHorarioAnterior) {
+      this.btnHorarioAnterior.classList.remove("animar");
+    }
+    
+    const buttonElement = document.getElementById(String(index));
+    if (buttonElement) { 
+      buttonElement.classList.add("animar");
+      this.btnHorarioAnterior = buttonElement;
+    }
+    if (data) {
+      this.horarioSeleccionado = data;
+      console.log(this.horarioSeleccionado)
+    }
   }
 
   recibirPaciente(event : Event){
@@ -199,12 +272,13 @@ export class SolicitarTurnoComponent {
     if (selectElement.value != "0") {
       this.horariosDisponibles = this.generarHorarios();
       this.pacienteSeleccionado = JSON.parse(selectElement.value);
+      this.horariosDisponibles = this.generarHorarios();
       this.obtenerHorarios()
     }
   }
 
   realizarReserva(){
-    if (!this.fechaSeleccionada || this.formGroup.invalid || this.formGroup.controls['horario'].value == 'Horarios' || this.formGroup.controls['especialista'].value == 'Especialista' || this.formGroup.controls['especialidad'].value == 'Especialidad' || (this.formGroup.controls['paciente'].value == 'Paciente' && this.auth.perfil == 'Administrador')) {
+    if (!this.fechaSeleccionada || this.formGroup.invalid || !this.horarioSeleccionado || !this.especialistaSeleccionado || !this.especialidad || (this.formGroup.controls['paciente'].value == 'Paciente' && this.auth.perfil == 'Administrador')) {
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -223,12 +297,12 @@ export class SolicitarTurnoComponent {
       return
     }
     this.flagLoader = true;
-    let horario = JSON.stringify({dia:this.fechaCompletaSeleccionada, horario:this.formGroup.controls['horario'].value})
+    let horario = JSON.stringify({dia:this.fechaCompletaSeleccionada.dia, horario:this.horarioSeleccionado})
     console.log(horario)
     let turno! : Turno;
     if (this.auth.perfil == 'Paciente') { 
       this.database.actualizarTurnos(this.auth.id, 'pacientes', horario).then(()=>{
-        turno = new Turno(this.formGroup.controls['horario'].value, this.fechaCompletaSeleccionada, this.auth.paciente, this.especialistaSeleccionado, this.formGroup.controls["especialidad"].value);
+        turno = new Turno(this.horarioSeleccionado, this.fechaCompletaSeleccionada.dia, this.auth.paciente, this.especialistaSeleccionado, this.especialidad);
         this.database.agregarColeccion('turnos',turno);
         this.flagLoader = false;
         Swal.fire({
@@ -243,7 +317,7 @@ export class SolicitarTurnoComponent {
       });
     }else{
       this.database.actualizarTurnos(this.pacienteSeleccionado.id, 'pacientes', horario).then(()=>{
-        turno = new Turno(this.formGroup.controls['horario'].value, this.fechaCompletaSeleccionada, this.pacienteSeleccionado, this.especialistaSeleccionado, this.formGroup.controls["especialidad"].value);
+        turno = new Turno(this.horarioSeleccionado, this.fechaCompletaSeleccionada.dia, this.pacienteSeleccionado, this.especialistaSeleccionado, this.especialidad);
         this.database.agregarColeccion('turnos',turno);
         this.flagLoader = false;
         Swal.fire({
@@ -260,10 +334,17 @@ export class SolicitarTurnoComponent {
     return JSON.stringify(obj);
   }
 
+  jsonParse(obj : string){
+    return JSON.parse(obj)
+  }
+
   limpiar(){
-    this.formGroup.controls["especialidad"].setValue("Especialidad");
-    this.formGroup.controls["especialista"].setValue("Especialista");
-    this.formGroup.controls["horario"].setValue("Horarios");
+    this.especialidad = "";
+    this.especialistaSeleccionado = "";
+    this.horarioSeleccionado = "";
+    this.btnHorarioAnterior.classList.remove("animar");;
+    this.btnEspecialidadAnterior.classList.remove("animar");;
+    this.btnEspecialistaAnterior.classList.remove("animar");;
     this.formGroup.controls["paciente"].setValue("Paciente");
   }
 }

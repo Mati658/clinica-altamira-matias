@@ -86,6 +86,10 @@ export class DatabaseService {
     return this.firestore.collection('turnos').doc(id).update({calificacion: mensaje});
   }
 
+  actualizarExpTurno(id:string, puntos:number){
+    return this.firestore.collection('turnos').doc(id).update({exp: puntos});
+  }
+
   actualizarEspecialista(id:string, aprobacion:boolean){
     return this.firestore.collection('especialistas').doc(id).update({aprobado: aprobacion});
   }

@@ -1,24 +1,37 @@
 <div style="display: flex; justify-content: center;">
     @if (flagLoader) 
     {
-        <div style="position: absolute; z-index: 10000; height: 200px; justify-content: center; top: 35%;">
+        <div style="position: fixed; z-index: 10000; height: 200px; justify-content: center; top: 35%;">
             <app-loader [mensaje]="mensaje"></app-loader>
         </div>
     }
     <div class="container" style="width: 50%;">
         <form class="form" action="" [formGroup]="formGroup" (ngSubmit)="realizarReserva()">
 
-            <div class="container-select">
-                <div class="custom-select">
-                    <select formControlName="especialidad" name="especialidad">
-                        <option>Especialidad</option>
-                        @for (item of especializaciones[0].especialidadesMedicas; track $index) {
-                            <option [value]="item">{{item}}</option>
-                        }
-                    </select>
-                    <div class="select-arrow"></div>
-                </div>
+            <div class="container-esp">
+                @for (item of especializaciones[0].especialidadesMedicas; track $index) {
+                    <button type="button" [id]="'0'+$index" (click)="recibirEspecialidad(item, '0'+$index)" class="btn-img">
+                        <img [src]="(jsonParse(item)).img" width="90">
+                    </button>
+                }
                 
+            </div>
+
+            <div [hidden]="!especialidad" class="container-esp">
+                @for (item of especialistas; track $index) {
+                    @if (item.especializaciones.includes(especialidad) && item.aprobado) {
+                        <button type="button" [id]="'1'+$index" (click)="recibirEspecialista(item, '1'+$index)" class="btn-esp">
+                            <img [src]="item.imagenes[0]" class="img">
+                            <label>{{item.nombre}} {{item.apellido}}</label>
+                        </button>
+                    }
+                }
+            </div>
+
+            <!-- @if (item.especializaciones.includes(especialidad) && item.horariosDisponibles[getDia(fechaSeleccionada)].especialidad == especialidad && item.aprobado) { -->
+
+                
+            <!-- <div class="container-select">
                 <div class="custom-select">
                     <select formControlName="especialista" name="especialista" (change)="recibirEspecialista($event)">
                         <option>Especialista</option>
@@ -30,9 +43,9 @@
                     </select>
                     <div class="select-arrow"></div>
                 </div>
-            </div>
+            </div> -->
 
-            <div style="width: 40%; height: 50vh; position: relative; left: 10%; margin-top: 2%;">
+            <div [hidden]="!especialistaSeleccionado" style="width: 40%; height: 50vh; position: relative; left: 10%; margin-top: 5%;">
                 <div class="card-fechas">
                     <table style="width: 100%;">
                         <thead>
@@ -41,37 +54,33 @@
                         <tbody>
                             @for (fecha of fechas; track $index) {
                                 <tr (click)="seleccionarFecha($index); obtenerHorarios()" [id]="$index">
-                                    @if (fecha.split(",")[0] != 'domingo') 
-                                    {
-                                        <td>{{ fecha }}</td>
+                                    @if (fecha.dia.split(",")[0] != 'domingo') {
+                                        <td>{{ fecha.fecha }}</td>
                                     }
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
+
                 <div class="container-select" style="position: absolute; width: fit-content; right: -29vh; top: 0; display: flex; flex-direction: column;">
-                    <div class="custom-select">
-                        <select formControlName="horario" name="horario">
-                            <option>Horarios</option>
-                            @for (item of horariosDisponibles; track $index) {
-                                <option >{{item}}</option>
-                            }
-                        </select>
-                        <div class="select-arrow"></div>
-                    </div>
-                    
-                    <div class="custom-select" [hidden]="auth.perfil != 'Administrador'">
-                        <select formControlName="paciente" name="paciente" (change)="recibirPaciente($event)">
-                            <option>Paciente</option>
-                            @for (item of pacientes; track $index) {
-                                <option [value]="jsonStringify(item)">{{item.nombre}} {{item.apellido}}</option>
-                            }
-                        </select>
-                        <div class="select-arrow"></div>
-                    </div>
+
+                    <div [hidden]="!fechaSeleccionada" class="container-horarios">
+                        @for (item of horariosDisponibles; track $index) {
+                            <button type="button" [id]="'2'+$index" (click)="recibirHorario(item, '2'+$index)" class="btn-fec">{{item}}</button>
+                        }
+                    </div>                
                 </div>
-                <span style="display: flex; margin-top: 10%;  font-family: 'Lugrasimo'; font: bold; width: 400px;">Fecha: {{fechaSeleccionada}} <br> Horario: {{formGroup.controls['horario'].value}}<br> Especialista: @if (especialistaSeleccionado) { {{especialistaSeleccionado.nombre}} {{especialistaSeleccionado.apellido}} }   <br> Especialidad:{{formGroup.controls['especialidad'].value}}</span>
+                <div class="custom-select" [hidden]="auth.perfil != 'Administrador'">
+                    <select formControlName="paciente" name="paciente" (change)="recibirPaciente($event)">
+                        <option>Paciente</option>
+                        @for (item of pacientes; track $index) {
+                            <option [value]="jsonStringify(item)">{{item.nombre}} {{item.apellido}}</option>
+                        }
+                    </select>
+                    <div class="select-arrow"></div>
+                </div>
+                <span style="display: flex; margin-top: 10%;  font-family: 'Lugrasimo'; font: bold; width: 400px;">Fecha: {{fechaSeleccionada}} <br> Horario: {{horarioSeleccionado}}<br> Especialista: @if (especialistaSeleccionado) { {{especialistaSeleccionado.nombre}} {{especialistaSeleccionado.apellido}} }   <br> Especialidad:{{especialidad}}</span>
             </div>
             
             <button type="submit" style="position: relative; margin-top: 30%; left: 35%;">Reservar turno</button>
