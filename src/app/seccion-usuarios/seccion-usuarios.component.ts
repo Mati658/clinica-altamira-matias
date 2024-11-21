@@ -6,6 +6,8 @@ import { RegisterComponent } from '../register/register.component';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ListadoHistorialComponent } from '../listado-historial/listado-historial.component';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-seccion-usuarios',
@@ -71,6 +73,55 @@ export class SeccionUsuariosComponent implements OnDestroy {
     this.usuarios = []
     this.usuarios = this.usuarios.concat(this.admins,this.especialistas,this.pacientes);
     console.log(this.usuarios)
+  }
+
+  descargarExcel() {
+    // 1. Define los datos en formato JSON
+    let datos : any = [];
+
+    this.usuarios.forEach(async user=>{
+      let data : any = {
+        Nombre:`${user.nombre} ${user.apellido}`,
+        Apellido:user.apellido,
+        Edad:user.edad,
+        DNI:user.dni,
+        Mail:user.mail,
+        Tipo:user.tipoUsuario
+      };
+
+      if (user.tipoUsuario == "especialista") {
+        let especialidades : string[] = [];
+        user.especializaciones.forEach(async (especialidad:string) => {
+          especialidades.push(especialidad);
+        });
+        let formateado = especialidades.join(', ')
+        data.Especializaciones = formateado;
+      }
+      datos.push(data);
+    })
+
+
+      const worksheet = XLSX.utils.json_to_sheet(datos);
+
+       // Ajustar el ancho de las columnas
+      worksheet['!cols'] = [
+        { wch: 25 }, // Ancho de la columna "Nombre"
+        { wch: 25 }, // Ancho de la columna "Apellido"
+        { wch: 25 }, // Ancho de la columna "Edad"
+        { wch: 10 }, // Ancho de la columna "DNI"
+        { wch: 40 }, // Ancho de la columna "Mail"
+        { wch: 15 }, // Ancho de la columna "Mail"
+        { wch: 100 }, // Ancho de la columna "Especialidad"
+      ];
+
+
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Usuarios');
+
+      const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+      const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+      saveAs(blob, `Datos-Usuarios.xlsx`);
   }
 
   ngOnDestroy(): void {
