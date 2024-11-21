@@ -95,6 +95,12 @@ También puede acceder al historial de todos los pacientes, con la posibilidad d
 
 ![Screenshot_25](https://github.com/user-attachments/assets/75b71570-ab22-4478-8f21-6c0eded51edf)
 
+Si hace click en el botón con el + a la derecha de la lista, el admin puede agregar pacientes, especialistas y administradores.
+
+![Screenshot_26](https://github.com/user-attachments/assets/9b8a513e-23c4-41c9-8025-75d6130b516c)
+
+![Screenshot_28](https://github.com/user-attachments/assets/ac73cc52-9260-4462-b341-1b37e28ed13c)
+
 ## Turnos
 
 ![Screenshot_27](https://github.com/user-attachments/assets/ebb7a71d-4c28-4b7d-b342-0ad9954ba221)
