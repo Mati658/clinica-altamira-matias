@@ -1,0 +1,110 @@
+<div class="registro">
+
+    <form class="form" action="" [formGroup]="formGroup" (ngSubmit)="cargarHistoria()">
+        <!-- ALTURA -->
+        <div class="input-group">
+            <label class="label">Altura</label>
+            <input required="" formControlName="altura" name="email" id="email" class="input" type="number">
+            <div></div>
+        </div>
+            
+        <!-- PESO -->
+        <div class="input-group">
+            <label class="label">Peso</label>
+            <input required="" formControlName="peso" name="email" id="email" class="input" type="number">
+            <div></div>
+        </div>
+
+        <!-- TEMPERATURA -->
+        <div class="input-group">
+            <label class="label">Temperatura</label>
+            <input required="" formControlName="temperatura" name="email" id="email" class="input" type="number">
+            <div></div>
+        </div>
+
+        <!-- PRESION -->
+        <div class="input-group">
+            <label class="label">Presion</label>
+            <input required="" formControlName="presion" name="email" id="email" class="input" type="number">
+            <div></div>
+        </div>
+
+        <div [hidden]="flagValor1">
+            <button class="button" type="button" (click)="flagValor1 = true; agregarControl('clave1', true); agregarControl('valor1', true);">
+                <span class="button__text">Agregar dato</span>
+                <span class="button__icon"><svg class="svg" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></span>
+            </button>
+        </div>
+
+        <!-- CLAVE Y VALOR 1 -->
+         <div class="flex" *ngIf="flagValor1">
+            <div class="input-group">
+                <label class="label">Clave</label>
+                <input required="" formControlName="clave1" name="email" id="email" class="input" type="text">
+                <div></div>
+            </div>
+
+            <div class="input-group">
+                <label class="label">Valor</label>
+                <input required="" formControlName="valor1" name="email" id="email" class="input" type="text">
+                <div></div>
+            </div>
+         </div>
+
+        <!--------------------->
+
+
+        <div [hidden]="flagValor2 || !flagValor1">
+            <button  class="button" type="button" (click)="flagValor2 = true; agregarControl('clave2', true); agregarControl('valor2', true);">
+                <span class="button__text">Agregar dato</span>
+                <span class="button__icon"><svg class="svg" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></span>
+            </button>
+        </div>
+
+        <!-- CLAVE Y VALOR 2 -->
+        <div class="flex" *ngIf="flagValor2">
+            <div class="input-group">
+                <label class="label">Clave</label>
+                <input required="" formControlName="clave2" name="email" id="email" class="input" type="text">
+                <div></div>
+            </div>
+
+            <div class="input-group">
+                <label class="label">Valor</label>
+                <input required="" formControlName="valor2" name="email" id="email" class="input" type="text">
+                <div></div>
+            </div>
+         </div>
+
+        <!--------------------->
+    
+        <div [hidden]="flagValor3 || !flagValor2">
+            <button  class="button" type="button" (click)="flagValor3 = true; agregarControl('clave3', true); agregarControl('valor3', true);">
+                <span class="button__text">Agregar dato</span>
+                <span class="button__icon"><svg class="svg" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></span>
+            </button>
+        </div>
+    
+        <!-- CLAVE Y VALOR 3 -->
+        <div class="flex" *ngIf="flagValor3">
+            <div class="input-group">
+                <label class="label">Clave</label>
+                <input required="" formControlName="clave3" name="email" id="email" class="input" type="text">
+                <div></div>
+            </div>
+
+            <div class="input-group">
+                <label class="label">Valor</label>
+                <input required="" formControlName="valor3" name="email" id="email" class="input" type="text">
+                <div></div>
+            </div>
+         </div>
+
+        <!--------------------->
+
+        <button class="submit">Enviar historia</button>
+        <button type="button" class="submit" (click)="this.cancelado.emit(false);">Cancelar</button>            
+
+    </form>
+
+</div>

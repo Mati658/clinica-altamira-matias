@@ -1,1 +1,34 @@
-<p>Proximamente...</p>
+<div class="clinic-container" style="z-index: -1;" [class.expanded]="isExpanded">
+    <div class="clinic-card" (click)="toggleExpand()" role="main" tabindex="0">
+      <div class="clinic-content">
+        <h1 class="title" role="heading">Bienvenido a la Clínica Dragón </h1>
+        <div class="basic-info" [class.hide]="isExpanded">
+          <p>Donde la salud renace con el fuego del cuidado.</p>
+          <button class="expand-btn" aria-label="Click to see more information">Ver más</button>
+        </div>
+        <div class="detailed-info" [class.show]="isExpanded">
+          <h2>¿Qué ofrecemos?</h2>
+          <ul>
+            <li>✔️ Consultorios modernos: Contamos con 6 consultorios totalmente equipados.</li>
+            <li>✔️ Laboratorios propios: Realiza tus estudios en nuestros dos laboratorios físicos dentro de la clínica.</li>
+            <li>✔️ Comodidad garantizada: Una amplia sala de espera general para tu confort.</li>
+          </ul>
+          <h2>Nuestros profesionales</h2>
+          <ul>
+            <li>🌟 Expertos en diversas especialidades, organizados por consultorios según su disponibilidad.</li>
+            <li>🌟 Atención personalizada para consultas o tratamientos con los mejores especialistas.</li>
+          </ul>
+          <h2>Gestión de turnos 100% online</h2>
+
+          <p>¡Agenda tu turno ahora y disfruta de una atención de calidad!</p> 
+          <h2>Horarios</h2>
+          <div class="hours">
+            <p>Lunes - Viernes: 8:00 AM - 19:00 PM</p>
+            <p>Sábados: 8:00 AM - 14:00 PM</p>
+            <p>Domingos: Cerrado</p>
+          </div>
+          <button class="close-btn" aria-label="Close detailed information" (click)="toggleExpand()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -301,7 +301,9 @@ export class SolicitarTurnoComponent {
     console.log(horario)
     let turno! : Turno;
     if (this.auth.perfil == 'Paciente') { 
-      this.database.actualizarTurnos(this.auth.id, 'pacientes', horario).then(()=>{
+      this.database.actualizarTurnos(this.auth.id, 'pacientes', horario).then(async ()=>{
+        await this.database.actualizarEspecialistaPacientes(this.auth.id, 'pacientes', this.especialistaSeleccionado.id)
+        await this.database.actualizarTurnos(this.especialistaSeleccionado.id, 'especialistas', horario);  
         turno = new Turno(this.horarioSeleccionado, this.fechaCompletaSeleccionada.dia, this.auth.paciente, this.especialistaSeleccionado, this.especialidad);
         this.database.agregarColeccion('turnos',turno);
         this.flagLoader = false;
@@ -317,6 +319,7 @@ export class SolicitarTurnoComponent {
       });
     }else{
       this.database.actualizarTurnos(this.pacienteSeleccionado.id, 'pacientes', horario).then(()=>{
+        this.database.actualizarTurnos(this.especialistaSeleccionado.id, 'especialistas', horario);  
         turno = new Turno(this.horarioSeleccionado, this.fechaCompletaSeleccionada.dia, this.pacienteSeleccionado, this.especialistaSeleccionado, this.especialidad);
         this.database.agregarColeccion('turnos',turno);
         this.flagLoader = false;
@@ -327,7 +330,6 @@ export class SolicitarTurnoComponent {
         this.limpiar();
       });
     }
-    this.database.actualizarTurnos(this.especialistaSeleccionado.id, 'especialistas', horario);  
   }
 
   jsonStringify(obj: any): string {

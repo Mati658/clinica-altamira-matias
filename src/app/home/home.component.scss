@@ -1,0 +1,117 @@
+.clinic-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("https://images.unsplash.com/photo-1538108149393-fbbd81895907");
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  
+  .clinic-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .clinic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  }
+  
+  .title {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .basic-info {
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+  
+  .basic-info.hide {
+    display: none;
+  }
+  
+  .detailed-info {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .detailed-info.show {
+    display: block;
+    opacity: 1;
+  }
+  
+  .detailed-info h2 {
+    color: #34495e;
+    margin: 1.5rem 0 1rem;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    padding: 0.5rem 0;
+    color: #576574;
+  }
+  
+  .hours p, .contact p {
+    margin: 0.5rem 0;
+    color: #576574;
+  }
+  
+  .expand-btn, .close-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .expand-btn:hover, .close-btn:hover {
+    background: #2980b9;
+  }
+  
+  @media (max-width: 768px) {
+    .clinic-card {
+      width: 95%;
+      padding: 1.5rem;
+    }
+  
+    .title {
+      font-size: 2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .clinic-card {
+      width: 100%;
+      border-radius: 15px;
+      padding: 1rem;
+    }
+  
+    .title {
+      font-size: 1.8rem;
+    }
+  }

@@ -104,3 +104,54 @@ td{
       rotate: 0;
     }
   }
+
+/* From Uiverse.io by JkHuger */ 
+button {
+  width: 60px;
+  height: 60px;
+  transform: scale(1);
+  border-style: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 50%;
+  background: rgb(228, 232, 236);
+  background: linear-gradient(45deg, rgb(228, 232, 236) 0%, rgb(234 234 234) 100%);
+  transition: all .3s;
+}
+
+button img {
+  width: 100%; /* La imagen se ajustará al ancho del botón */
+  height: 100%; /* La imagen se ajustará al alto del botón */
+  object-fit: cover; /* Recorta la imagen para que se adapte sin deformarse */
+  border-radius: 50%; /* Redondea las esquinas para que sea circular */
+}
+
+button:active {
+  background: rgb(218, 221, 224);
+  background: linear-gradient(45deg, rgb(218, 221, 224) 0%, rgb(241, 241, 241) 100%);
+  transition: all .3s;
+  transform: scale(.95);
+}
+
+button i {
+  font-size: 20px;
+  background: linear-gradient(-45deg, gray 0%, lightgray 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all .3s;
+}
+
+button:active i {
+  transform: scale(.9);
+  transition: all .3s;
+}
+
+.svg {
+  width: 25px;
+  height: 60px;
+  border-style: none;
+  align-items: center;
+}
+
+
+  

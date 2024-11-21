@@ -1,29 +1,50 @@
 <div class="pelicula">
-    <H1 style="text-align: center;">USUARIOS</H1>
+    <H1 style="text-align: center; font-family: 'Rampart One', sans-serif;">USUARIOS</H1>
+    
+    <div class="tab-container" style="position: absolute; margin-top: 50px; z-index: 0;">
+        <input type="radio" name="tab" id="turnos" class="tab tab--1" [(ngModel)]="mostrar" [value]="'turnos'"/>
+        <label class="tab_label" for="turnos">Turnos</label>
         
-    <div class="tabla-pelicula">
-        <app-listado-usuarios [usuarios]="usuarios" (detalleUsuario)="recibirDetalleUsuario($event)"></app-listado-usuarios>
-        <div class="detalle-pelicula">
-            <app-detalle-usuario [obtenerDetalleUsuario]="detalleUsuario"></app-detalle-usuario>
-        </div>
-    </div>
-    
-    
-
-    <div tabindex="0" class="plusButton" (click)="registrar = true; canceladoRecibido = false">
-        <svg class="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
-            <g mask="url(#mask0_21_345)">
-            <path d="M13.75 23.75V16.25H6.25V13.75H13.75V6.25H16.25V13.75H23.75V16.25H16.25V23.75H13.75Z"></path>
-            </g>
-        </svg>
+        <input type="radio" name="tab" id="historial" class="tab tab--2" [(ngModel)]="mostrar" [value]="'historial'"/>
+        <label class="tab_label" for="historial">Historiales</label>
+        
+        <div class="indicator"></div>
     </div>
 
-    @if (registrar) 
-    {   
-        <div class="registro">
-            <div class="container">
-                <app-register (canelado)="canceladoRecibido; registrar = false" style=" display: flex; position: absolute; right: 50%; top: -5%;"></app-register>
+    @switch (mostrar) {
+        @case ('turnos') {
+            <div class="tabla-pelicula">
+                <app-listado-usuarios [turnos]="turnos" [usuarios]="usuarios" (detalleUsuario)="recibirDetalleUsuario($event)"></app-listado-usuarios>
+                <div class="detalle-pelicula">
+                    <app-detalle-usuario [obtenerDetalleUsuario]="detalleUsuario"></app-detalle-usuario>
+                </div>
             </div>
-        </div>
+            
+            
+        
+            <div tabindex="0" class="plusButton" (click)="registrar = true; canceladoRecibido = false">
+                <svg class="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+                    <g mask="url(#mask0_21_345)">
+                    <path d="M13.75 23.75V16.25H6.25V13.75H13.75V6.25H16.25V13.75H23.75V16.25H16.25V23.75H13.75Z"></path>
+                    </g>
+                </svg>
+            </div>
+        
+            @if (registrar) 
+            {   
+                <div class="registro">
+                    <div class="container" [class]="flagAnim ? 'slide-in-top': 'slide-out-bottom'">
+                        <app-register (canelado)="recibirFlag($event);" style=" display: flex; position: absolute; right: 50%; top: -5%;"></app-register>
+                    </div>
+                </div>
+            }
+        }
+        @case ('historial') {
+            <div class="tabla-historial">
+                <app-listado-historial [turnos]="turnos"></app-listado-historial>
+            </div>
+        }
     }
+
+    
 </div>

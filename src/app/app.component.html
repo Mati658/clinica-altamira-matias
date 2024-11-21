@@ -4,7 +4,7 @@
             <app-loader style="position: absolute; z-index: 10000; height: 200px; justify-content: center; top: 35%;" [mensaje]="mensaje"></app-loader>
         </div>
     }
-<div class="navbar">
+<div class="navbar" style="z-index: 1000000;">
     <div class="button-container">
         <button class="button" routerLink="">
         <svg
@@ -113,7 +113,7 @@
                 </svg>
             </button>
             
-            @if (auth.perfil == "Especialista" && auth.auth.currentUser?.emailVerified) {
+            @if ((auth.perfil == "Especialista" || auth.perfil == "Paciente") && auth.auth.currentUser?.emailVerified) {
                 <button class="button" routerLink="mi-perfil">
                     
                     <svg width="2em" height="2em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -123,6 +123,21 @@
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
                         
                         <g id="SVGRepo_iconCarrier"> <path d="M12.12 12.78C12.05 12.77 11.96 12.77 11.88 12.78C10.12 12.72 8.71997 11.28 8.71997 9.50998C8.71997 7.69998 10.18 6.22998 12 6.22998C13.81 6.22998 15.28 7.69998 15.28 9.50998C15.27 11.28 13.88 12.72 12.12 12.78Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path d="M18.74 19.3801C16.96 21.0101 14.6 22.0001 12 22.0001C9.40001 22.0001 7.04001 21.0101 5.26001 19.3801C5.36001 18.4401 5.96001 17.5201 7.03001 16.8001C9.77001 14.9801 14.25 14.9801 16.97 16.8001C18.04 17.5201 18.64 18.4401 18.74 19.3801Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </g>
+                        
+                    </svg>
+                </button>
+            }
+
+            @if ((auth.perfil == "Especialista") && auth.auth.currentUser?.emailVerified) {
+                <button class="button" routerLink="seccion-pacientes">
+                    
+                    <svg width="2em" height="2em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                        
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                        
+                        <g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"/> <path d="M23 42H19H15H9C7.89543 42 7 41.1046 7 40V8C7 6.89543 7.89543 6 9 6H37C38.1046 6 39 6.89543 39 8V15V19.5" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/> <path d="M36.6364 27C39.0463 27 41 28.8804 41 31.2C41 34.2196 38.0909 36.8 36.6364 38.2C35.6667 39.1333 34.4545 40.0667 33 41C31.5455 40.0667 30.3333 39.1333 29.3636 38.2C27.9091 36.8 25 34.2196 25 31.2C25 28.8804 26.9537 27 29.3636 27C30.8814 27 32.2182 27.7459 33 28.8775C33.7818 27.7459 35.1186 27 36.6364 27Z" fill="#2F88FF" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/> <path d="M15 14H31" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/> </g>
                         
                     </svg>
                 </button>
@@ -166,5 +181,6 @@
     }
     
 </div>
-  
-<router-outlet />
+<div [@routeAnimations]="getRouteAnimationData()">
+    <router-outlet />
+</div>

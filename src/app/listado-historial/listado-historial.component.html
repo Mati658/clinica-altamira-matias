@@ -1,0 +1,46 @@
+<div class="card-fondo">
+    @for (turno of turnos; track $index) {
+        @if (turno.historial) {
+
+            <div class="card" (click)="seleccionarTurno($index, turno)" >
+                <p>{{turno.paciente.nombre}} {{turno.paciente.apellido}}</p>   
+                <p>{{turno.especialidad}}</p>   
+                »Altura: {{turno.historial.altura}} <br> 
+                »Peso: {{turno.historial.peso}} <br> 
+                »Presión: {{turno.historial.presion}} <br> 
+                »Temperatura: {{turno.historial.temperatura}}°C <br> 
+
+                @if (turno.historial.clave1) {
+                    »{{turno.historial.clave1}}: {{turno.historial.valor1}} <br>
+                    @if (turno.historial.clave2) {
+                        »{{turno.historial.clave2}}: {{turno.historial.valor2}} <br>
+                        @if (turno.historial.clave3) {
+                            »{{turno.historial.clave3}}: {{turno.historial.valor3}} <br>
+                        }
+                    }
+                }   
+
+                <div style="margin-top: 5%; border: 2px solid black; width: 99%; "></div>
+                <p>Turnos</p>
+                @for (item of turno.paciente.turnos; track $index) {
+                    @if ($index < 3) {
+                        »{{jsonParse(turno.paciente.turnos[(turno.paciente.turnos.length-1) - $index]).dia}} <br>
+                    }
+                }
+
+
+
+                <div style="gap: 20px;">
+                    <button (click)="descargarHistorial()">
+                        <span class="shadow"></span>
+                        <span class="edge"></span>
+                        <span class="front text"> Descargar
+                        </span>
+                    </button>
+                
+                </div>
+            </div>
+
+        }
+    }
+</div>

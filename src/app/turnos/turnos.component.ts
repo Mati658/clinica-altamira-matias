@@ -23,8 +23,8 @@ export class TurnosComponent {
     })
 
     this.formGroup = this.fb.group({
-      filtrarEspecialista : [""],
-      filtrarEspecialidad : [""],
+      filtrar: [""],
+
     });
   }
 

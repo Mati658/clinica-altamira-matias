@@ -5,11 +5,12 @@ import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModu
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LoaderComponent } from '../loader/loader.component';
+import { ListadoHistorialComponent } from '../listado-historial/listado-historial.component';
 
 @Component({
   selector: 'app-mi-perfil',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, LoaderComponent],
+  imports: [ReactiveFormsModule, FormsModule, LoaderComponent, ListadoHistorialComponent],
   templateUrl: './mi-perfil.component.html',
   styleUrl: './mi-perfil.component.scss'
 })
@@ -18,7 +19,7 @@ export class MiPerfilComponent {
   database = inject(DatabaseService)
   fb = inject(FormBuilder);
   formGroup : FormGroup;
-
+  turnos : any[] = [];
   flagLoader = false;
 
   mensaje : string = "Guardando...";
@@ -35,38 +36,68 @@ export class MiPerfilComponent {
   especializacionesLista : any[] = [];
 
   constructor(){
-    this.horariosDisponibles;
-    console.log(this.auth.especialista)
-    this.auth.especialista.especializaciones.forEach((element:any) => {
-      this.especializaciones += `»${element} \n`
-      this.especializacionesLista.push(element)
-    });
+    this.formGroup = this.fb.group({})
+    if (this.auth.especialista) {
+      
+      this.horariosDisponibles;
+      console.log(this.auth.especialista)
+      this.auth.especialista.especializaciones.forEach((element:any) => {
+        this.especializaciones += `»${element} \n`
+        this.especializacionesLista.push(element)
+      });
 
-    this.formGroup = this.fb.group({
-      inicioLunes: ["",[Validators.required, , this.notZeroValidator()]],
-      inicioMartes: ["",[Validators.required, , this.notZeroValidator()]],
-      inicioMiercoles: ["",[Validators.required, , this.notZeroValidator()]],
-      inicioJueves: ["",[Validators.required, , this.notZeroValidator()]],
-      inicioViernes: ["",[Validators.required, , this.notZeroValidator()]],
-      inicioSabado: ["",[Validators.required, , this.notZeroValidator()]],
+      this.formGroup = this.fb.group({
+        inicioLunes: ["",[Validators.required, , this.notZeroValidator()]],
+        inicioMartes: ["",[Validators.required, , this.notZeroValidator()]],
+        inicioMiercoles: ["",[Validators.required, , this.notZeroValidator()]],
+        inicioJueves: ["",[Validators.required, , this.notZeroValidator()]],
+        inicioViernes: ["",[Validators.required, , this.notZeroValidator()]],
+        inicioSabado: ["",[Validators.required, , this.notZeroValidator()]],
 
-      finLunes: ["",[Validators.required, , this.notZeroValidator()]],
-      finMartes: ["",[Validators.required, , this.notZeroValidator()]],
-      finMiercoles: ["",[Validators.required, , this.notZeroValidator()]],
-      finJueves: ["",[Validators.required, , this.notZeroValidator()]],
-      finViernes: ["",[Validators.required, , this.notZeroValidator()]],
-      finSabado: ["",[Validators.required, , this.notZeroValidator()]],
+        finLunes: ["",[Validators.required, , this.notZeroValidator()]],
+        finMartes: ["",[Validators.required, , this.notZeroValidator()]],
+        finMiercoles: ["",[Validators.required, , this.notZeroValidator()]],
+        finJueves: ["",[Validators.required, , this.notZeroValidator()]],
+        finViernes: ["",[Validators.required, , this.notZeroValidator()]],
+        finSabado: ["",[Validators.required, , this.notZeroValidator()]],
 
-      especialidadLunes: ["",[Validators.required, , this.notZeroValidator()]],
-      especialidadMartes: ["",[Validators.required, , this.notZeroValidator()]],
-      especialidadMiercoles: ["",[Validators.required, , this.notZeroValidator()]],
-      especialidadJueves: ["",[Validators.required, , this.notZeroValidator()]],
-      especialidadViernes: ["",[Validators.required, , this.notZeroValidator()]],
-      especialidadSabado: ["",[Validators.required, , this.notZeroValidator()]],
-      },{
-        validators: this.horarioValidator() // Aplica el validador de grupo aquí
-      }
-    );
+        especialidadLunes: ["",[Validators.required, , this.notZeroValidator()]],
+        especialidadMartes: ["",[Validators.required, , this.notZeroValidator()]],
+        especialidadMiercoles: ["",[Validators.required, , this.notZeroValidator()]],
+        especialidadJueves: ["",[Validators.required, , this.notZeroValidator()]],
+        especialidadViernes: ["",[Validators.required, , this.notZeroValidator()]],
+        especialidadSabado: ["",[Validators.required, , this.notZeroValidator()]],
+        },{
+          validators: this.horarioValidator() // Aplica el validador de grupo aquí
+        }
+      );
+    }
+
+    this.database.traerUsuarios('turnos').subscribe((turnos:any)=>{
+      setTimeout(() => {
+        this.turnos = [];
+
+        switch (this.auth.perfil) {
+          case 'Paciente':
+            turnos.forEach((turno:any) => {
+              if (turno.paciente.mail == this.auth.auth.currentUser?.email) {
+                this.turnos.push(turno);
+              }
+            });
+            break;
+        
+          case 'Especialista':
+            turnos.forEach((turno:any) => {
+              if (turno.especialista.mail == this.auth.auth.currentUser?.email) {
+                this.turnos.push(turno);
+              }
+            });
+            break;
+        }
+      }, 1000);
+        
+    })
+
   }
 
   notZeroValidator(): ValidatorFn {
@@ -121,7 +152,7 @@ export class MiPerfilComponent {
       return
     }
 
-    if (!this.auth.especialista.aprobadp) {
+    if (!this.auth.especialista.aprobado) {
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",

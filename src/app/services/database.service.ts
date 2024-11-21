@@ -94,6 +94,10 @@ export class DatabaseService {
     return this.firestore.collection('especialistas').doc(id).update({aprobado: aprobacion});
   }
 
+  actualizarHistorialTurno(id:string, historial:any){
+    return this.firestore.collection('turnos').doc(id).update({historial: historial});
+  }
+
   async actualizarTurnos(id:string, path:string, horario:string){
     const docRef = doc(getFirestore(), path, id);
     const docSnap = await getDoc(docRef);
@@ -116,6 +120,31 @@ export class DatabaseService {
       });
     }
   }
+
+  async actualizarEspecialistaPacientes(id:string, path:string, especialista:string){
+    const docRef = doc(getFirestore(), path, id);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      const data : any = docSnap.data();
+      if (data.atendidoPor) {
+        if (!data.atendidoPor.includes(especialista)) {
+          const nuevosMedicos = [...data.atendidoPor, especialista];
+          
+          return updateDoc(docRef, {
+            atendidoPor: nuevosMedicos
+          });
+        }
+        return;
+      }
+      const nuevosMedicos = [especialista];
+      return updateDoc(docRef, {
+        atendidoPor: nuevosMedicos
+      });
+    }
+  }
+
+
 
   async actualizarHorarios(id:string, path:string, horario:any[]){
     const docRef = doc(getFirestore(), path, id);

@@ -24,10 +24,13 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (state.url == '/solicitar-turno' && (auth.perfil == 'Administrador' || auth.perfil == 'Paciente')) {
     return true
   }
-  if (state.url == '/mi-perfil' && auth.perfil == 'Especialista') {
+  if (state.url == '/mi-perfil' && (auth.perfil == 'Especialista' || auth.perfil == 'Paciente')) {
     return true
   }
   if (state.url == '/mis-turnos' && (auth.perfil == 'Especialista' || auth.perfil == 'Paciente')) {
+    return true
+  }
+  if (state.url == '/seccion-pacientes' && auth.perfil == 'Especialista') {
     return true
   }
   return flag;

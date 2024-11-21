@@ -4,17 +4,20 @@ import { ListadoUsuariosComponent } from '../listado-usuarios/listado-usuarios.c
 import { DatabaseService } from '../services/database.service';
 import { RegisterComponent } from '../register/register.component';
 import { Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { ListadoHistorialComponent } from '../listado-historial/listado-historial.component';
 
 @Component({
   selector: 'app-seccion-usuarios',
   standalone: true,
-  imports: [DetalleUsuarioComponent, ListadoUsuariosComponent, RegisterComponent],
+  imports: [DetalleUsuarioComponent, ListadoUsuariosComponent, RegisterComponent, ListadoHistorialComponent, FormsModule],
   templateUrl: './seccion-usuarios.component.html',
   styleUrl: './seccion-usuarios.component.scss'
 })
 export class SeccionUsuariosComponent implements OnDestroy {
   database = inject(DatabaseService);
   usuarios : any[] = [];
+  turnos : any[] = [];
   detalleUsuario! : any;
   admins : any[] = [];
   especialistas : any[] = [];
@@ -22,6 +25,9 @@ export class SeccionUsuariosComponent implements OnDestroy {
   registrar : boolean = false;
   usuarioRegistrar : string = "";
   canceladoRecibido : boolean = false;
+  flagAnim : boolean = true;
+
+  mostrar : string = "turnos";
 
   pacientesBD! : Subscription;
   especialistasBD! : Subscription;
@@ -40,10 +46,25 @@ export class SeccionUsuariosComponent implements OnDestroy {
         this.pacientes = usuario;
         this.actualizarUsuarios();
     })
+
+    this.database.traerUsuarios('turnos').subscribe((turnos:any)=>{
+      setTimeout(() => {
+        this.turnos = [];
+        this.turnos = turnos;
+      }, 1000);
+    })
   }
 
   recibirDetalleUsuario(usuario : any){
     this.detalleUsuario = usuario;
+  }
+
+  recibirFlag(flag : any){
+    this.flagAnim = !flag
+    setTimeout(async () => {
+      this.registrar = !flag;
+    }, 500);
+    console.log(flag)
   }
 
   actualizarUsuarios(){

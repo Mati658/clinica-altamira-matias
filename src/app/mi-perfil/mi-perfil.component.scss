@@ -7,6 +7,16 @@
     flex-direction: column;
 }
 
+.tabla-pelicula{
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  width: 60%;
+  height: 50%;
+  top: 24%;
+  right: 50%;
+}
+
 .custom-select {
 position: relative;
 }

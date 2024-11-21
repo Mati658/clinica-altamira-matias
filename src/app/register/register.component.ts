@@ -232,4 +232,8 @@ export class RegisterComponent {
       this.captcha = event;
     }, 1000);
   }
+
+  jsonParse(data:any){
+    return JSON.parse(data);
+  }
 }

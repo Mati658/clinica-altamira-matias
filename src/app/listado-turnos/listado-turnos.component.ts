@@ -18,16 +18,22 @@ export class ListadoTurnosComponent {
   turnoAnterior : any;
   especialistaSeleccionado : any;
   pacienteSeleccionado : any;
-  @Input() filtrarEspecialidad : string = "";
-  @Input() filtrarEspecialista : string = "";
+  @Input() filtrar: string = "";
+
 
   @Input() turnos:any[] = [];
+
+  @Output() cargaHistorial : EventEmitter<boolean> = new EventEmitter<boolean>;
+  @Output() turnoEnviado : EventEmitter<any> = new EventEmitter<any>;
+
   turno : any;
 
   seleccionarTurno(index : number, turno : any){
     this.marcarTurno(index);
     this.turno = turno;
+    this.turnoEnviado.emit(turno)
     console.log(this.turno)
+
   }
 
   marcarTurno(index:number){
@@ -73,9 +79,14 @@ export class ListadoTurnosComponent {
 
   verResenia(){
     setTimeout(() => {
+      let comentario : string = "";
+      if (this.auth.perfil == 'Paciente') {
+        comentario = this.turno.mensaje ? this.turno.mensaje : this.turno.calificacion
+      }
+
       Swal.fire({
         title: this.auth.perfil == 'Paciente' ? 'Diagnóstico:' : 'Reseña:',
-        text: this.auth.perfil == 'Paciente' ? this.turno.mensaje : this.turno.calificacion
+        text: this.auth.perfil == 'Paciente' ? comentario : this.turno.calificacion
       });
     }, 100);
   }

@@ -8,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  isExpanded: boolean = false;
 
+  toggleExpand(): void {
+    this.isExpanded = !this.isExpanded;
+  }
 }

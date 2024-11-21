@@ -12,6 +12,7 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import localeEs from '@angular/common/locales/es';
 
 import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaComponent, RecaptchaSettings } from 'ng-recaptcha';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,6 +34,6 @@ export const appConfig: ApplicationConfig = {
         siteKey: '6LcpoXcqAAAAAIfQ5YvZE7bLvlC_rnx9Upkh1S8b',
       } as RecaptchaSettings,
     },
-
+    provideAnimations()
   ],
 };

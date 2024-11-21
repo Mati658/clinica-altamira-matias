@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { ChildrenOutletContexts, RouterLink, RouterOutlet } from '@angular/router';
 import { DatabaseService } from './services/database.service';
 import { AuthService } from './services/auth.service';
 import Swal from 'sweetalert2';
@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { LoaderComponent } from './loader/loader.component';
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
+import { slideInAnimation } from './animations';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import { registerLocaleData } from '@angular/common';
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  animations : [slideInAnimation]
 })
 export class AppComponent {
   title = 'clinica';
@@ -33,7 +35,8 @@ export class AppComponent {
   paginaTurnos : string = "";
 
 
-  constructor(){
+
+  constructor(private contexts: ChildrenOutletContexts){
     registerLocaleData(localeEs, 'es');
 
     this.auth.onAuthStateChanged((auth) => {
@@ -105,6 +108,10 @@ export class AppComponent {
         });
       }
     });
+  }
+
+  getRouteAnimationData() {
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
   }
 
 

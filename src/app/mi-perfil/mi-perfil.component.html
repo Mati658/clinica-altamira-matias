@@ -1,300 +1,309 @@
 <div class="container">
-
-    @if (flagLoader) 
-    {
-        <div style="position: absolute; z-index: 10000; height: 200px; justify-content: center; top: 35%;">
-            <app-loader [mensaje]="mensaje"></app-loader>
-        </div>
-    }
-    
-    <div>
-        <div class="card-client" >
-            <div class="user-picture">
-                <img [src]="auth.especialista.imagenes[0]" width="80">
+    @if (auth.perfil == 'Especialista') {
+        @if (flagLoader) 
+        {
+            <div style="position: absolute; z-index: 10000; height: 200px; justify-content: center; top: 35%;">
+                <app-loader [mensaje]="mensaje"></app-loader>
             </div>
-            <p class="name-client"> {{auth.especialista.nombre}} {{auth.especialista.apellido}}
-                <span>{{especializaciones}}</span>
-                <br>
-                <span>Edad: {{auth.especialista.edad}}</span>
-                <span>DNI: {{auth.especialista.dni}}</span>
-            </p>
+        }
+        
+        <div>
+            <div class="card-client" >
+                <div class="user-picture">
+                    <img [src]="auth.especialista.imagenes[0]" width="80">
+                </div>
+                <p class="name-client"> {{auth.especialista.nombre}} {{auth.especialista.apellido}}
+                    <span>{{especializaciones}}</span>
+                    <br>
+                    <span>Edad: {{auth.especialista.edad}}</span>
+                    <span>DNI: {{auth.especialista.dni}}</span>
+                </p>
+            </div>
         </div>
+
+        <form class="form" action="" [formGroup]="formGroup" (ngSubmit)="guardarHorarios()">
+            <div style="display: flex;">
+
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Lunes</td>
+                            
+                            <td>Inicio</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="inicioLunes" name="inicioLunes">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosDisponibles; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td style="text-align: right;">Final</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="finLunes" name="finLunes">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosDisponibles; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td>Especialidad</td>
+
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="especialidadLunes" name="especialidadLunes">
+                                        <option value="0">Especialidad</option>
+                                        @for (item of especializacionesLista; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Martes</td>
+
+                            <td>Inicio</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="inicioMartes" name="inicioMartes">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosDisponibles; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td style="text-align: right;">Final</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="finMartes" name="finMartes">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosDisponibles; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td>Especialidad</td>
+
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="especialidadMartes" name="especialidadMartes">
+                                        <option value="0">Especialidad</option>
+                                        @for (item of especializacionesLista; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Miércoles</td>
+
+                            <td>Inicio</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="inicioMiercoles" name="inicioMiercoles">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosDisponibles; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td style="text-align: right;">Final</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="finMiercoles" name="finMiercoles">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosDisponibles; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td>Especialidad</td>
+
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="especialidadMiercoles" name="especialidadMiercoles">
+                                        <option value="0">Especialidad</option>
+                                        @for (item of especializacionesLista; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Jueves</td>
+
+                            <td>Inicio</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="inicioJueves" name="inicioJueves">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosDisponibles; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td style="text-align: right;">Final</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="finJueves" name="finJueves">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosDisponibles; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td>Especialidad</td>
+
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="especialidadJueves" name="especialidadJueves">
+                                        <option value="0">Especialidad</option>
+                                        @for (item of especializacionesLista; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Viernes</td>
+
+                            <td>Inicio</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="inicioViernes" name="inicioViernes">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosDisponibles; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td style="text-align: right;">Final</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="finViernes" name="finViernes">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosDisponibles; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td>Especialidad</td>
+
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="especialidadViernes" name="especialidadViernes">
+                                        <option value="0">Especialidad</option>
+                                        @for (item of especializacionesLista; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Sábado</td>
+
+                            <td>Inicio</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="inicioSabado" name="inicioSabado">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosSabado; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td style="text-align: right;">Final</td>
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="finSabado" name="finSabado">
+                                        <option value="0">Horarios</option>
+                                        @for (item of horariosSabado; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+
+                            <td>Especialidad</td>
+
+                            <td>
+                                <div class="custom-select">
+                                    <select formControlName="especialidadSabado" name="especialidadSabado">
+                                        <option value="0">Especialidad</option>
+                                        @for (item of especializacionesLista; track $index) {
+                                            <option [value]="item">{{item}}</option>
+                                        }
+                                    </select>
+                                    <div class="select-arrow"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <button type="submit" style="position: relative; margin-top: 5%; left: 35%;">Guardar Horarios</button>
+
+        </form>
+    }
+    @else {
+
+    <H1 style="text-align: center; font-family: 'Rampart One', sans-serif;">HISTORIAL CLÍNICO</H1>
+
+    <div class="tabla-pelicula" style="z-index: 0;">
+        <app-listado-historial [turnos]="turnos"></app-listado-historial>
     </div>
 
-    <form class="form" action="" [formGroup]="formGroup" (ngSubmit)="guardarHorarios()">
-        <div style="display: flex;">
-
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Lunes</td>
-                        
-                        <td>Inicio</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="inicioLunes" name="inicioLunes">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosDisponibles; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td style="text-align: right;">Final</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="finLunes" name="finLunes">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosDisponibles; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td>Especialidad</td>
-
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="especialidadLunes" name="especialidadLunes">
-                                    <option value="0">Especialidad</option>
-                                    @for (item of especializacionesLista; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Martes</td>
-
-                        <td>Inicio</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="inicioMartes" name="inicioMartes">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosDisponibles; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td style="text-align: right;">Final</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="finMartes" name="finMartes">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosDisponibles; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td>Especialidad</td>
-
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="especialidadMartes" name="especialidadMartes">
-                                    <option value="0">Especialidad</option>
-                                    @for (item of especializacionesLista; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Miércoles</td>
-
-                        <td>Inicio</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="inicioMiercoles" name="inicioMiercoles">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosDisponibles; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td style="text-align: right;">Final</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="finMiercoles" name="finMiercoles">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosDisponibles; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td>Especialidad</td>
-
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="especialidadMiercoles" name="especialidadMiercoles">
-                                    <option value="0">Especialidad</option>
-                                    @for (item of especializacionesLista; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Jueves</td>
-
-                        <td>Inicio</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="inicioJueves" name="inicioJueves">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosDisponibles; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td style="text-align: right;">Final</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="finJueves" name="finJueves">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosDisponibles; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td>Especialidad</td>
-
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="especialidadJueves" name="especialidadJueves">
-                                    <option value="0">Especialidad</option>
-                                    @for (item of especializacionesLista; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Viernes</td>
-
-                        <td>Inicio</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="inicioViernes" name="inicioViernes">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosDisponibles; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td style="text-align: right;">Final</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="finViernes" name="finViernes">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosDisponibles; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td>Especialidad</td>
-
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="especialidadViernes" name="especialidadViernes">
-                                    <option value="0">Especialidad</option>
-                                    @for (item of especializacionesLista; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Sábado</td>
-
-                        <td>Inicio</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="inicioSabado" name="inicioSabado">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosSabado; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td style="text-align: right;">Final</td>
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="finSabado" name="finSabado">
-                                    <option value="0">Horarios</option>
-                                    @for (item of horariosSabado; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-
-                        <td>Especialidad</td>
-
-                        <td>
-                            <div class="custom-select">
-                                <select formControlName="especialidadSabado" name="especialidadSabado">
-                                    <option value="0">Especialidad</option>
-                                    @for (item of especializacionesLista; track $index) {
-                                        <option [value]="item">{{item}}</option>
-                                    }
-                                </select>
-                                <div class="select-arrow"></div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <button type="submit" style="position: relative; margin-top: 5%; left: 35%;">Guardar Horarios</button>
-
-    </form>
-
+    }
 </div>
