@@ -6,11 +6,13 @@ import { AuthService } from '../services/auth.service';
 import { Turno } from '../../classes/turno';
 import Swal from 'sweetalert2';
 import { LoaderComponent } from '../loader/loader.component';
+import { LazyLoadDirective } from '../directives/lazy-load.directive';
+import { ToolTipDirective } from '../directives/tool-tip.directive';
 
 @Component({
   selector: 'app-solicitar-turno',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, LoaderComponent],
+  imports: [ReactiveFormsModule, FormsModule, LoaderComponent, LazyLoadDirective, ToolTipDirective],
   templateUrl: './solicitar-turno.component.html',
   styleUrl: './solicitar-turno.component.scss'
 })

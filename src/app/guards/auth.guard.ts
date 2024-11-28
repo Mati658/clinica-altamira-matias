@@ -33,5 +33,8 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (state.url == '/seccion-pacientes' && auth.perfil == 'Especialista') {
     return true
   }
+  if (state.url == '/logs' && auth.perfil == 'Administrador') {
+    return true;
+  }
   return flag;
 };

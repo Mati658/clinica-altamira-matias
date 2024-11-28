@@ -39,9 +39,9 @@
         
             @if (registrar) 
             {   
-                <div class="registro">
+                <div appClickOutside (outside)="recibirFlag($event)" class="registro">
                     <div class="container" [class]="flagAnim ? 'slide-in-top': 'slide-out-bottom'">
-                        <app-register (canelado)="recibirFlag($event);" style=" display: flex; position: absolute; right: 50%; top: -5%;"></app-register>
+                        <app-register  (canelado)="recibirFlag($event);" style=" display: flex; position: absolute; right: 50%; top: -5%;"></app-register>
                     </div>
                 </div>
             }

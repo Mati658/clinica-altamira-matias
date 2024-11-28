@@ -6,11 +6,12 @@ import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LoaderComponent } from '../loader/loader.component';
 import { ListadoHistorialComponent } from '../listado-historial/listado-historial.component';
+import { LazyLoadDirective } from '../directives/lazy-load.directive';
 
 @Component({
   selector: 'app-mi-perfil',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, LoaderComponent, ListadoHistorialComponent],
+  imports: [ReactiveFormsModule, FormsModule, LoaderComponent, ListadoHistorialComponent, LazyLoadDirective],
   templateUrl: './mi-perfil.component.html',
   styleUrl: './mi-perfil.component.scss'
 })

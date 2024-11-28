@@ -9,11 +9,13 @@ import { AuthService } from '../services/auth.service';
 import { LoaderComponent } from '../loader/loader.component';
 import { Administrador } from '../../classes/administrador';
 import { RecaptchaComponent, RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
+import { LazyLoadDirective } from '../directives/lazy-load.directive';
+import { PasswordPipe } from '../pipes/password.pipe';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, FormsModule, LoaderComponent, RecaptchaFormsModule, RecaptchaModule,RecaptchaFormsModule],
+  imports: [ReactiveFormsModule, RouterLink, FormsModule, LoaderComponent, RecaptchaFormsModule, RecaptchaModule,RecaptchaFormsModule, LazyLoadDirective, PasswordPipe],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })

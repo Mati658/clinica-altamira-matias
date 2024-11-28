@@ -1,0 +1,101 @@
+
+<div id="cssportal-grid">
+	<div id="div1">
+        <div class="card">
+        <div class="card-details">
+            <p class="text-title">INGRESOS</p>
+                <canvas id="graficoBarras" style="display: flex; width: 100%; margin-bottom: 10%;"></canvas>
+        </div>
+        <button class="card-button" style="left: 30%;" (click)="descargarPDF('graficoBarras', 'Ingresos Por Día')">Descargar PDF</button>
+        <button class="card-button" style="left: 70%;" (click)="descargarExcel('graficoBarras', 'Ingresos Por Día')">Descargar EXCEL</button>  
+        </div>
+        
+    </div>
+
+	<div id="div2">
+        <div class="card">
+            <div class="card-details">
+                <p class="text-title">TURNOS POR DÍA</p>
+                <canvas id="graficoLinea" style="display: flex; width: 100%; margin-bottom: 10%;"></canvas>
+            </div>
+            <button class="card-button" style="left: 30%;" (click)="descargarPDF('graficoLinea', 'Turnos Por Día')">Descargar PDF</button>
+            <button class="card-button" style="left: 70%;" (click)="descargarExcel('graficoLinea', 'Turnos Por Día')">Descargar EXCEL</button>
+        </div>
+    </div>
+
+	<div id="div3">    
+        <div class="card">
+            <div class="card-details">
+                <p class="text-title">TURNOS SOLICITADOS</p>
+                <div style="position: absolute; width: 25%; right: 0; top: 0;">
+                    <div class="custom-select">
+                        <select name="paciente" (change)="recibirEspecialista($event)">
+                            <option>Especialista</option>
+                            @for (item of especialistas; track $index) {
+                                <option [value]="jsonStringify(item)">{{item.nombre}} {{item.apellido}}</option>
+                            }
+                        </select>
+                        <div class="select-arrow"></div>
+                    </div>
+            
+                    <div class="custom-select">
+                        <select name="fechaInicio" (change)="recibirFechaInicio($event)">
+                            <option>Fecha inicio</option>
+                            @for (item of turnosDisponibles; track $index) {
+                                <option [value]="item.dia">{{item.dia}}</option>
+                            }
+                        </select>
+                        <div class="select-arrow"></div>
+                    </div>
+                    
+                    <div class="custom-select">
+                        <select name="fechaFinal" (change)="recibirFechaFinal($event)">
+                            <option>Fecha Final</option>
+                            @for (item of turnosDisponibles; track $index) {
+                                <option [value]="item.dia">{{item.dia}}</option>
+                            }
+                        </select>
+                        <div class="select-arrow"></div>
+                    </div>
+                </div>
+        
+                <canvas id="graficoLineaSolicitados" style="display: flex; width: 100%; margin-bottom: 10%;"></canvas>
+            </div>
+            <button class="card-button" style="left: 30%;" (click)="descargarPDF('graficoLineaSolicitados', 'Turnos Solicitiados')">Descargar PDF</button>
+            <button class="card-button" style="left: 70%;" (click)="descargarExcel('graficoLineaSolicitados', 'Turnos Solicitiados')">Descargar EXCEL</button>
+        </div>     
+    </div>
+
+	<div id="div4">  
+        <div class="card">
+            <div class="card-details">
+                <p class="text-title">TURNOS FINALIZADOS</p>
+                <canvas id="graficoLineaFinalizados" style="display: flex; width: 100%; margin-bottom: 10%;"></canvas>
+            </div>
+            <button class="card-button" style="left: 30%;" (click)="descargarPDF('graficoLineaFinalizados', 'Turnos Finalizados')">Descargar PDF</button>
+            <button class="card-button" style="left: 70%;" (click)="descargarExcel('graficoLineaFinalizados', 'Turnos Finalizados')">Descargar EXCEL</button>
+        </div>   
+    </div>
+
+	<div id="div5"> 
+        <div class="card" style="right: -25%;">
+            <div class="card-details">
+                <p class="text-title">TURNOS POR ESPECIALIDAD</p>
+                <canvas id="graficoPolar" style="display: flex; width: 100%; margin-bottom: 10%;"></canvas>
+            </div>
+            <button class="card-button" style="left: 30%;" (click)="descargarPDF('graficoPolar', 'Turnos por Especialidad')">Descargar PDF</button>
+            <button class="card-button" style="left: 70%;" (click)="descargarExcel('graficoPolar', 'Turnos por Especialidad')">Descargar EXCEL</button>
+        </div>  
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+

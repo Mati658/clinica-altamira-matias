@@ -12,7 +12,7 @@
             <tr (click)="seleccionarUsuario($index)" [id]="$index">
                 <td>
                     <button class="btn" (click)="exportarExcel()">
-                        <img [src]="usuario.imagenes[0]">
+                        <img appLazyLoad [src]="usuario.imagenes[0]">
                         <i class="fas fa-fingerprint"></i>
                     </button>
                 </td>

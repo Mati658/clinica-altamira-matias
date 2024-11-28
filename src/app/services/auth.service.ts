@@ -20,6 +20,7 @@ export class AuthService {
   
   id : string = "";
   nombre : string = "";
+  apellido : string = "";
   perfil : string = "";
   mailVerificado : string = "";
   especialistaAprobado : string = "";

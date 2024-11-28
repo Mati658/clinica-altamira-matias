@@ -37,7 +37,6 @@ export class FilterPipePipe implements PipeTransform {
       const match5 = terms1.some(term => item.hora.toLowerCase().includes(term));
       const match6 = terms1.some(term => item.estado.toLowerCase().includes(term));
 
-      //historial clinico
       if (item.historial) {
         console.log(Object.values(item.historial))
         match7 = terms1.some(term => String(Object.values(item.historial)).toLowerCase().includes(term));

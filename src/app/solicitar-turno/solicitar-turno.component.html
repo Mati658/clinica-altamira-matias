@@ -10,8 +10,8 @@
 
             <div class="container-esp">
                 @for (item of especializaciones[0].especialidadesMedicas; track $index) {
-                    <button type="button" [id]="'0'+$index" (click)="recibirEspecialidad(item, '0'+$index)" class="btn-img">
-                        <img [src]="(jsonParse(item)).img" width="90">
+                    <button appToolTip [tooltipText]="(jsonParse(item)).esp" type="button" [id]="'0'+$index" (click)="recibirEspecialidad(item, '0'+$index)" class="btn-img">
+                        <img appLazyLoad [src]="(jsonParse(item)).img" width="90">
                     </button>
                 }
                 
@@ -21,9 +21,9 @@
                 @for (item of especialistas; track $index) {
                     @if (item.especializaciones.includes(especialidad) && item.aprobado) {
                         <button type="button" [id]="'1'+$index" (click)="recibirEspecialista(item, '1'+$index)" class="btn-esp">
-                            <img [src]="item.imagenes[0]" class="img">
-                            <label>{{item.nombre}} {{item.apellido}}</label>
+                            <img appLazyLoad [src]="item.imagenes[0]" class="img">
                         </button>
+                        <label>{{item.nombre}} {{item.apellido}}</label>
                     }
                 }
             </div>

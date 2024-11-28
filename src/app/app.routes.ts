@@ -11,6 +11,7 @@ import { MisTurnosComponent } from './mis-turnos/mis-turnos.component';
 import { CargaHistorialComponent } from './carga-historial/carga-historial.component';
 import { SeccionPacientesComponent } from './seccion-pacientes/seccion-pacientes.component';
 import { animation } from '@angular/animations';
+import { LogsComponent } from './logs/logs.component';
 
 export const routes: Routes = [
     {
@@ -36,9 +37,6 @@ export const routes: Routes = [
     {
         path: 'loader', component : LoaderComponent,
         canActivate : [authGuard],
-        // data : {animation: 'Page'}
-
-
     },
     {
         path: 'seccion-usuarios', component : SeccionUsuariosComponent,
@@ -78,6 +76,10 @@ export const routes: Routes = [
         path: 'seccion-pacientes', component : SeccionPacientesComponent,
         canActivate : [authGuard],
         data : {animation: 'j'}
-
+    },
+    {
+        path: 'logs', component : LogsComponent,
+        canActivate : [authGuard],
+        data : {animation: 'k'}
     }
 ];

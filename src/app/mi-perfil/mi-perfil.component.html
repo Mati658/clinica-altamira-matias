@@ -10,7 +10,7 @@
         <div>
             <div class="card-client" >
                 <div class="user-picture">
-                    <img [src]="auth.especialista.imagenes[0]" width="80">
+                    <img appLazyLoad [src]="auth.especialista.imagenes[0]" width="80">
                 </div>
                 <p class="name-client"> {{auth.especialista.nombre}} {{auth.especialista.apellido}}
                     <span>{{especializaciones}}</span>

@@ -4,11 +4,12 @@ import { DatabaseService } from './services/database.service';
 import { AuthService } from './services/auth.service';
 import Swal from 'sweetalert2';
 import { Especialista } from '../classes/especialista';
-import { Subscription } from 'rxjs';
+import { min, Subscription } from 'rxjs';
 import { LoaderComponent } from './loader/loader.component';
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 import { slideInAnimation } from './animations';
+import { ToolTipDirective } from './directives/tool-tip.directive';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ import { slideInAnimation } from './animations';
   imports: [
     RouterOutlet, 
     RouterLink,
-    LoaderComponent
+    LoaderComponent,
+    ToolTipDirective
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -50,6 +52,7 @@ export class AppComponent {
               this.paginaTurnos = 'mis-turnos'
               this.auth.id = user.id; 
               this.auth.nombre = user.nombre; 
+              this.auth.apellido = user.apellido; 
               this.auth.mail = user.mail; 
               this.auth.perfil = "Especialista";
               this.auth.especialista = user;
@@ -73,6 +76,7 @@ export class AppComponent {
               console.log(user)
               this.auth.id = user.id; 
               this.auth.nombre = user.nombre; 
+              this.auth.apellido = user.apellido; 
               this.auth.mail = user.mail; 
               this.auth.perfil = "Paciente";
               this.auth.paciente = user;
@@ -94,6 +98,7 @@ export class AppComponent {
               console.log(user)
               this.auth.id = user.id; 
               this.auth.nombre = user.nombre; 
+              this.auth.apellido = user.apellido; 
               this.auth.mail = user.mail; 
               this.auth.perfil = "Administrador";
               if (this.auth.auth.currentUser?.emailVerified) {
@@ -113,7 +118,6 @@ export class AppComponent {
   getRouteAnimationData() {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
   }
-
 
   signOut(){
     this.auth.signOut().then(res=>{

@@ -166,6 +166,10 @@ export class DatabaseService {
     return this.firestore.collection(path).doc(id).get();
   }
 
+
+
+
+
   // async actualizarSinID(path: string, campo: string, valor: string, horario: string){
   //   const db = getFirestore();
   //   const coleccionRef = collection(db, path);

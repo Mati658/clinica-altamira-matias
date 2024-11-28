@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 import { FilterPipePipe } from '../pipes/filter-pipe.pipe';
 import { AuthService } from '../services/auth.service';
+import { EmojiPipe } from '../pipes/emoji.pipe';
 
 @Component({
   selector: 'app-listado-turnos',
@@ -15,6 +16,7 @@ import { AuthService } from '../services/auth.service';
 export class ListadoTurnosComponent {
   database = inject(DatabaseService);
   auth = inject(AuthService);
+  emoji = inject(EmojiPipe);
   turnoAnterior : any;
   especialistaSeleccionado : any;
   pacienteSeleccionado : any;
@@ -58,15 +60,28 @@ export class ListadoTurnosComponent {
       confirmButtonText: "Confirmar",
       showLoaderOnConfirm: true,
       preConfirm: async (mensaje) => {
+        const mensajeConEmojis = this.emoji.transform(mensaje);
+
         this.database.actualizarEstadoTurno(this.turno.id, 'Cancelado')
         if (this.auth.perfil == 'Especialista') {
-          this.database.actualizarMensajeTurno(this.turno.id, mensaje)
+          this.database.actualizarMensajeTurno(this.turno.id, mensajeConEmojis)
         }else{
-          this.database.actualizarCalificacionTurno(this.turno.id, mensaje)
+          this.database.actualizarCalificacionTurno(this.turno.id, mensajeConEmojis)
         }
-        console.log(mensaje)
+        console.log(mensajeConEmojis)
       },
-      allowOutsideClick: () => !Swal.isLoading()
+      allowOutsideClick: () => !Swal.isLoading(),
+      didOpen: () => {
+        const input = Swal.getInput();
+        if (input) {
+          // Detecta cuando el usuario escribe algo y aplica el Pipe en tiempo real
+          input.addEventListener('input', (event) => {
+            const value = input.value;
+            // Aplica el Pipe mientras escribe
+            input.value = this.emoji.transform(value);
+          });
+        }
+      }
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({

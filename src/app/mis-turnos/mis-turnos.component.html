@@ -1,7 +1,7 @@
 <div class="pelicula">
 
     @if (mostrarCargaHistorial) {
-        <div [class]="flagAnim ? 'slide-in-top': 'slide-out-bottom'" style="z-index: 100000; display: flex; position: absolute; right: 50%; top: -5%;">    
+        <div appClickOutside (outside)="cerrarHistorial()"  [class]="flagAnim ? 'slide-in-top': 'slide-out-bottom'" style="z-index: 100000; display: flex; position: absolute; right: 50%; top: -5%;">    
             <app-carga-historial (historialCompleto)="recibirHistorial($event)" (cancelado)="recibirFlag($event)"></app-carga-historial>
         </div>
     }

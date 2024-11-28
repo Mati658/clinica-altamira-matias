@@ -1,7 +1,3 @@
-.container{
-    // display: flex;
-}
-
 .container-select{
     margin-top: 5%;
     display: flex;
@@ -43,6 +39,9 @@
   height: 100px;
   flex: 1;
   padding: 0em 0em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-esp{
@@ -51,6 +50,9 @@
   // flex: 1;
   border-radius: 50%;
   padding: 0em 0em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-fec{

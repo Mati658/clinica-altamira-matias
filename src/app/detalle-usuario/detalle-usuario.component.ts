@@ -29,9 +29,9 @@ export class DetalleUsuarioComponent {
     tabla += `
     <tr>
       <td>
-        <img src="${usuario.imagenes[0]}" width="50" height="50">
+        <img appLazyLoad src="${usuario.imagenes[0]}" width="50" height="50">
         <br>
-        <img src="${usuario.imagenes[1]}" width="50" height="50">
+        <img appLazyLoad src="${usuario.imagenes[1]}" width="50" height="50">
       </td>
       <td>${usuario.nombre}</td>   
       <td>${usuario.apellido}</td>

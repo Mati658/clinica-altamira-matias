@@ -7,11 +7,12 @@ import { Especialista } from '../../classes/especialista';
 import Swal from 'sweetalert2';
 import { Router, RouterLink } from '@angular/router';
 import { LoaderComponent } from '../loader/loader.component';
+import { LazyLoadDirective } from '../directives/lazy-load.directive';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, FormsModule, LoaderComponent],
+  imports: [ReactiveFormsModule, RouterLink, FormsModule, LoaderComponent, LazyLoadDirective],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -66,9 +67,37 @@ export class LoginComponent {
 
     this.auth.login(this.formGroup.controls['mail'].value, this.formGroup.controls['clave'].value).then((res)=>{
       if (res) {
+        this.guardarLogIngreso();
         this.router.navigateByUrl("");
       }
       this.flagLoader = false;
     });
   }
+
+  guardarLogIngreso(){
+    const hoy = new Date();
+    const opciones: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long' };
+
+    const fecha = new Date();
+    fecha.setDate(hoy.getDate());
+
+    const diaFormateado = (fecha.toLocaleDateString('es-ES', opciones)).split(',').shift();
+    
+
+    const dia = fecha.getDate();
+    const mes = fecha.getMonth() + 1;
+    const año = fecha.getFullYear();
+    const hora = fecha.getHours();
+    const minutos = fecha.getMinutes();
+    const fechaFormateada = `${dia}/${mes}/${año}`;
+    const horario = `${hora}:${minutos}`;
+
+    console.log(fechaFormateada)
+    
+    let log : any = {'usuario':`${this.auth.nombre} ${this.auth.apellido}`, 'dia': `${diaFormateado}-${fechaFormateada}`, 'horario': horario};
+    console.log(log);
+    this.database.agregarColeccion('logIngresos', log);
+  }
+
+
 }

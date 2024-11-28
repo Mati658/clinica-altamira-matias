@@ -3,11 +3,12 @@ import { DatabaseService } from '../services/database.service';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import Swal from 'sweetalert2';
+import { LazyLoadDirective } from '../directives/lazy-load.directive';
 
 @Component({
   selector: 'app-listado-usuarios',
   standalone: true,
-  imports: [],
+  imports: [LazyLoadDirective],
   templateUrl: './listado-usuarios.component.html',
   styleUrl: './listado-usuarios.component.scss'
 })

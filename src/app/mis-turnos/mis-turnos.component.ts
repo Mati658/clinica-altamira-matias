@@ -6,11 +6,12 @@ import { AuthService } from '../services/auth.service';
 import { CargaHistorialComponent } from '../carga-historial/carga-historial.component';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { ClickOutsideDirective } from '../directives/click-outside.directive';
 
 @Component({
   selector: 'app-mis-turnos',
   standalone: true,
-  imports: [ListadoTurnosComponent, FormsModule, ReactiveFormsModule, CargaHistorialComponent, CommonModule],
+  imports: [ListadoTurnosComponent, FormsModule, ReactiveFormsModule, CargaHistorialComponent, CommonModule, ClickOutsideDirective],
   templateUrl: './mis-turnos.component.html',
   styleUrl: './mis-turnos.component.scss'
 })
@@ -71,6 +72,14 @@ export class MisTurnosComponent {
     });
     console.log(historial)
     console.log(this.turnoActual.id)
+  }
+
+  cerrarHistorial(){
+    this.flagAnim = false
+    setTimeout(async () => {
+      this.mostrarCargaHistorial = false;
+      this.flagAnim = true;
+    }, 500);
   }
 
   recibirTurno(turno:any){

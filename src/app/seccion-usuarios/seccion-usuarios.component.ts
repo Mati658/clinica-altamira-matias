@@ -8,11 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { ListadoHistorialComponent } from '../listado-historial/listado-historial.component';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { ClickOutsideDirective } from '../directives/click-outside.directive';
 
 @Component({
   selector: 'app-seccion-usuarios',
   standalone: true,
-  imports: [DetalleUsuarioComponent, ListadoUsuariosComponent, RegisterComponent, ListadoHistorialComponent, FormsModule],
+  imports: [DetalleUsuarioComponent, ListadoUsuariosComponent, RegisterComponent, ListadoHistorialComponent, FormsModule, ClickOutsideDirective],
   templateUrl: './seccion-usuarios.component.html',
   styleUrl: './seccion-usuarios.component.scss'
 })
@@ -65,6 +66,7 @@ export class SeccionUsuariosComponent implements OnDestroy {
     this.flagAnim = !flag
     setTimeout(async () => {
       this.registrar = !flag;
+    this.flagAnim = true;
     }, 500);
     console.log(flag)
   }
